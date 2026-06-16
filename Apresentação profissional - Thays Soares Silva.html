@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thays Soares · Data & Analytics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0A0F;
+      --bg2: #111118;
+      --bg3: #1A1A24;
+      --purple: #7C3AED;
+      --purple-light: #A78BFA;
+      --coral: #FF6B6B;
+      --text: #F0EEF8;
+      --muted: #8B8AA0;
+      --border: rgba(124,58,237,0.18);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--purple-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--purple-light); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 2rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-content { max-width: 700px; }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--purple-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--purple);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title .line2 {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--purple-light);
+    }
+
+    .terminal-wrap {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+
+    .terminal-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-r { background: #FF5F57; }
+    .dot-y { background: #FEBC2E; }
+    .dot-g { background: #28C840; }
+
+    .terminal-line { color: var(--muted); margin-bottom: 0.25rem; }
+    .terminal-line .prompt { color: var(--purple-light); }
+    .terminal-line .cmd { color: var(--text); }
+    .terminal-line .output { color: var(--coral); }
+    .terminal-line .comment { color: #5B5A72; }
+
+    #typed-text { color: var(--coral); }
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--purple-light);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-bio strong { color: var(--text); font-weight: 500; }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #6D28D9; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--purple-light); color: var(--purple-light); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--purple-light);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 3rem;
+      font-size: 1rem;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--purple) 0%, transparent 70%);
+      margin-bottom: 6rem;
+      opacity: 0.3;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .skill-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-2px);
+    }
+
+    .skill-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .skill-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── TAGS ── */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      background: rgba(124,58,237,0.12);
+      color: var(--purple-light);
+      border: 1px solid rgba(124,58,237,0.25);
+    }
+
+    /* ── PROJECT CARDS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--coral));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-3px);
+    }
+
+    .project-card:hover::before { opacity: 1; }
+
+    .project-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 100px;
+      display: inline-flex;
+      width: fit-content;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge-mba {
+      background: rgba(124,58,237,0.15);
+      color: var(--purple-light);
+      border: 1px solid rgba(124,58,237,0.3);
+    }
+
+    .badge-eda {
+      background: rgba(255,107,107,0.12);
+      color: var(--coral);
+      border: 1px solid rgba(255,107,107,0.25);
+    }
+
+    .badge-wip {
+      background: rgba(251,191,36,0.1);
+      color: #FBB824;
+      border: 1px solid rgba(251,191,36,0.2);
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .project-tech {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .project-link {
+      font-size: 0.8rem;
+      color: var(--purple-light);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s;
+    }
+
+    .project-link:hover { gap: 0.6rem; }
+
+    /* ── COMING SOON CARD ── */
+    .card-wip {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+      .hero-title { font-size: 2.5rem; }
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .stat-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      line-height: 1;
+      min-width: 60px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--purple-light); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">thays<span>.soares</span></div>
+  <ul class="nav-links">
+    <li><a href="#sobre">sobre</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#mba">portfólio</a></li>
+    <li><a href="#eda">análises</a></li>
+    <li><a href="https://www.linkedin.com/in/thays-soares/" target="_blank">linkedin ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Publicidade → Dados & Analytics</div>
+    <h1 class="hero-title">
+      Thays Soares<br>
+      <span class="line2">Data Analyst</span>
+    </h1>
+
+    <div class="terminal-wrap">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+      </div>
+      <div class="terminal-line"><span class="comment"># perfil profissional</span></div>
+      <div class="terminal-line">
+        <span class="prompt">→ </span>
+        <span class="cmd">background = </span>
+        <span class="output">"Publicidade & Comunicação"</span>
+      </div>
+      <div class="terminal-line">
+        <span class="prompt">→ </span>
+        <span class="cmd">current = </span>
+        <span id="typed-text"></span><span class="cursor"></span>
+      </div>
+      <div class="terminal-line">
+        <span class="prompt">→ </span>
+        <span class="cmd">mba = </span>
+        <span class="output">"Dados & Analytics · Mackenzie · 2026"</span>
+      </div>
+    </div>
+
+    <p class="hero-bio">
+      Profissional em <strong>transição para a área de dados</strong>, com raízes em publicidade e comunicação.
+      Combino visão estratégica de negócio com análise de dados para contar histórias que geram decisões melhores.
+      Em formação contínua no MBA em Inteligência de Dados & Analytics.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#mba" class="btn btn-primary">Ver portfólio →</a>
+      <a href="https://www.linkedin.com/in/thays-soares/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+      <a href="https://github.com/thaays-ss" target="_blank" class="btn btn-outline">GitHub ↗</a>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem;"><div class="divider"></div></div>
+
+<!-- SOBRE -->
+<section id="sobre" class="reveal">
+  <div class="section-label">// sobre mim</div>
+  <h2 class="section-title">Da narrativa à<br>análise de dados</h2>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        Minha trajetória começa na publicidade — onde aprendi que <strong>toda decisão precisa de uma história, e toda história precisa de evidência.</strong>
+      </p>
+      <p>
+        Esse cruzamento me levou à transição para dados: a capacidade de construir narrativas com dados reais, de tornar o complexo compreensível, e de conectar análise técnica com impacto de negócio.
+      </p>
+      <p>
+        Estou desenvolvendo competências em <strong>Python, SQL e visualização de dados</strong>, com projetos aplicados que combinam coleta via API, modelagem preditiva e storytelling visual.
+      </p>
+      <p>
+        Atualmente no <strong>MBA em Inteligência de Dados & Analytics na Universidade Presbiteriana Mackenzie</strong>, onde aplico esses conhecimentos em projetos reais desde o primeiro semestre.
+      </p>
+      <div class="tag-list">
+        <span class="tag">Storytelling com Dados</span>
+        <span class="tag">Análise Exploratória</span>
+        <span class="tag">Machine Learning</span>
+        <span class="tag">Data Visualization</span>
+        <span class="tag">Transição de Carreira</span>
+      </div>
+    </div>
+
+    <div class="about-stats">
+      <div class="stat-item">
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Anos em transição profissional para dados</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Projetos publicados no portfólio</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">MBA</div>
+        <div class="stat-label">Inteligência de Dados & Analytics · Mackenzie · 2026</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Curiosidade sobre dados e como o mundo funciona</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem;"><div class="divider"></div></div>
+
+<!-- SKILLS -->
+<section id="skills" class="reveal">
+  <div class="section-label">// competências</div>
+  <h2 class="section-title">Skills em desenvolvimento</h2>
+  <p class="section-desc">Ferramentas e conceitos que estou aplicando em projetos reais.</p>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-name">Python</div>
+      <div class="skill-desc">Pandas, Scikit-learn, Plotly, Spotipy · análise e modelagem</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-name">SQL</div>
+      <div class="skill-desc">Consultas analíticas · BigQuery (GCP) · views e agregações</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <div class="skill-name">Excel Avançado</div>
+      <div class="skill-desc">Tabelas dinâmicas · análises financeiras · dashboards</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📈</div>
+      <div class="skill-name">Data Visualization</div>
+      <div class="skill-desc">Scrollytelling · HTML/CSS · Plotly · narrativas visuais</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">Machine Learning</div>
+      <div class="skill-desc">Classificação · clustering · modelos baseline · Scikit-learn</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-name">Cloud & APIs</div>
+      <div class="skill-desc">Google BigQuery · Spotify Web API · Google Colab</div>
+    </div>
+  </div>
+</section>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem;"><div class="divider"></div></div>
+
+<!-- PORTFÓLIO MBA -->
+<section id="mba" class="reveal">
+  <div class="section-label">// portfólio · mba</div>
+  <h2 class="section-title">Trabalhos do MBA</h2>
+  <p class="section-desc">Projetos desenvolvidos no MBA em Inteligência de Dados & Analytics · Mackenzie · 2026.</p>
+
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <span class="project-badge badge-mba">MBA · Data Visualization</span>
+      <div class="project-title">A Corrida pelo Algoritmo — Spotify</div>
+      <div class="project-desc">
+        Scrollytelling interativo mapeando as regras do algoritmo do Spotify. 491 faixas coletadas via API oficial, 5 anos de dados financeiros dos Shareholder Letters e análise de 339 artistas.
+      </div>
+      <div class="tag-list">
+        <span class="tag">Python</span>
+        <span class="tag">Spotify API</span>
+        <span class="tag">BigQuery</span>
+        <span class="tag">Plotly</span>
+      </div>
+      <div class="project-meta">
+        <span class="project-tech">Plotly · BigQuery · HTML</span>
+        <a href="https://thaays-ss.github.io/mba-data-visualization-spotify/" target="_blank" class="project-link">Ver projeto →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-badge badge-mba">MBA · Dados e Analytics</span>
+      <div class="project-title">O Dado é o Produto — Estratégia Spotify</div>
+      <div class="project-desc">
+        Análise estratégica de como o Spotify transformou comportamento de escuta em vantagem competitiva estrutural. Cobre modelo organizacional (Squads), arquitetura de dados e OKRs com dados reais do Q4/2025.
+      </div>
+      <div class="tag-list">
+        <span class="tag">Data Strategy</span>
+        <span class="tag">Data Mesh</span>
+        <span class="tag">OKRs & KPIs</span>
+      </div>
+      <div class="project-meta">
+        <span class="project-tech">HTML · CSS · Scrollytelling</span>
+        <a href="https://thaays-ss.github.io/mba_dados-para-negocio-spotify/" target="_blank" class="project-link">Ver projeto →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-badge badge-mba">MBA · Machine Learning</span>
+      <div class="project-title">Classificação de Jogos de Tabuleiro</div>
+      <div class="project-desc">
+        Modelo baseline de classificação para prever popularidade de jogos de tabuleiro usando dados do BoardGameGeek. 21.631 jogos, tratamento completo de nulos e 88% de acurácia com DecisionTree.
+      </div>
+      <div class="tag-list">
+        <span class="tag">Python</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">Classificação</span>
+      </div>
+      <div class="project-meta">
+        <span class="project-tech">Python · Jupyter · sklearn</span>
+        <a href="https://github.com/thaays-ss/mba-dados-analytics" target="_blank" class="project-link">Ver no GitHub →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem;"><div class="divider"></div></div>
+
+<!-- ANÁLISES EXPLORATÓRIAS -->
+<section id="eda" class="reveal">
+  <div class="section-label">// análises exploratórias</div>
+  <h2 class="section-title">Curiosidades que<br>viram análise</h2>
+  <p class="section-desc">Projetos pessoais sobre temas que me despertam curiosidade. Em construção — novos projetos em breve.</p>
+
+  <div class="projects-grid">
+
+    <div class="project-card card-wip">
+      <span class="project-badge badge-wip">Em breve</span>
+      <div class="project-title">Análise · [seu próximo tema]</div>
+      <div class="project-desc">
+        Uma pergunta curiosa + dados públicos + Python. Espaço reservado para sua próxima análise exploratória.
+      </div>
+      <div class="tag-list">
+        <span class="tag">EDA</span>
+        <span class="tag">Python</span>
+      </div>
+      <div class="project-meta">
+        <span class="project-tech">Em desenvolvimento</span>
+        <span class="project-link" style="color:var(--muted)">em breve</span>
+      </div>
+    </div>
+
+    <div class="project-card card-wip">
+      <span class="project-badge badge-wip">Em breve</span>
+      <div class="project-title">Análise · [seu próximo tema]</div>
+      <div class="project-desc">
+        Dados abertos + curiosidade genuína + visualização. Espaço reservado para o segundo projeto de análise exploratória.
+      </div>
+      <div class="tag-list">
+        <span class="tag">EDA</span>
+        <span class="tag">Visualização</span>
+      </div>
+      <div class="project-meta">
+        <span class="project-tech">Em desenvolvimento</span>
+        <span class="project-link" style="color:var(--muted)">em breve</span>
+      </div>
+    </div>
+
+    <div class="project-card card-wip">
+      <span class="project-badge badge-wip">Em breve</span>
+      <div class="project-title">Análise · [seu próximo tema]</div>
+      <div class="project-desc">
+        Qualquer tema que faça você perguntar "hm, será que dá pra analisar isso?". A resposta é sempre sim.
+      </div>
+      <div class="tag-list">
+        <span class="tag">EDA</span>
+        <span class="tag">SQL</span>
+      </div>
+      <div class="project-meta">
+        <span class="project-tech">Em desenvolvimento</span>
+        <span class="project-link" style="color:var(--muted)">em breve</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="reveal">
+  <div class="footer-left">
+    © 2026 · Thays Soares · feito com dados e curiosidade
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/thaays-ss" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/thays-soares/" target="_blank">LinkedIn</a>
+    <a href="mailto:seu@email.com">Contato</a>
+  </div>
+</footer>
+
+<script>
+  // Terminal typing animation
+  const phrases = [
+    '"Data Analyst em formação"',
+    '"MBA · Mackenzie · 2026"',
+    '"Python + SQL + Curiosidade"',
+  ];
+  let phraseIdx = 0, charIdx = 0, deleting = false;
+  const el = document.getElementById('typed-text');
+
+  function type() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1);
+      charIdx++;
+      if (charIdx === current.length) {
+        deleting = true;
+        setTimeout(type, 1800);
+        return;
+      }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1);
+      charIdx--;
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+      }
+    }
+    setTimeout(type, deleting ? 40 : 70);
+  }
+  type();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
