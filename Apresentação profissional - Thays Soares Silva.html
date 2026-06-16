@@ -510,6 +510,25 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ── LOADING DOTS ── */
+    .loading-dots {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .loading-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--purple);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; background: var(--purple-light); }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; background: var(--coral); }
+    @keyframes pulse {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -544,8 +563,8 @@
       <div class="terminal-line"><span class="comment"># perfil profissional</span></div>
       <div class="terminal-line">
         <span class="prompt">→ </span>
-        <span class="cmd">background = </span>
-        <span class="output">"Publicidade & Comunicação"</span>
+        <span class="cmd">graduação = </span>
+        <span class="output">""Publicidade & Propaganda · IESB · 2019""</span>
       </div>
       <div class="terminal-line">
         <span class="prompt">→ </span>
@@ -561,7 +580,6 @@
 
     <p class="hero-bio">
       Profissional em <strong>transição para a área de dados</strong>, com raízes em publicidade e comunicação.
-      Combino visão estratégica de negócio com análise de dados para contar histórias que geram decisões melhores.
       Em formação contínua no MBA em Inteligência de Dados & Analytics.
     </p>
 
@@ -589,7 +607,7 @@
         Esse cruzamento me levou à transição para dados: a capacidade de construir narrativas com dados reais, de tornar o complexo compreensível, e de conectar análise técnica com impacto de negócio.
       </p>
       <p>
-        Estou desenvolvendo competências em <strong>Python, SQL e visualização de dados</strong>, com projetos aplicados que combinam coleta via API, modelagem preditiva e storytelling visual.
+        Estou desenvolvendo competências em <strong>Python, SQL, visualização de dados e ferramentas no-code</strong>, com projetos aplicados que combinam coleta via API, modelagem preditiva e storytelling visual.
       </p>
       <p>
         Atualmente no <strong>MBA em Inteligência de Dados & Analytics na Universidade Presbiteriana Mackenzie</strong>, onde aplico esses conhecimentos em projetos reais desde o primeiro semestre.
@@ -605,8 +623,8 @@
 
     <div class="about-stats">
       <div class="stat-item">
-        <div class="stat-num">2+</div>
-        <div class="stat-label">Anos em transição profissional para dados</div>
+        <div class="stat-num">6m</div>
+        <div class="stat-label">Em transição profissional para dados</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">3</div>
@@ -662,6 +680,11 @@
       <div class="skill-icon">☁️</div>
       <div class="skill-name">Cloud & APIs</div>
       <div class="skill-desc">Google BigQuery · Spotify Web API · Google Colab</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">⚡</div>
+      <div class="skill-name">No-Code & Low-Code</div>
+      <div class="skill-desc">Automações · integrações · ferramentas visuais de dados</div>
     </div>
   </div>
 </section>
@@ -740,68 +763,25 @@
   <h2 class="section-title">Curiosidades que<br>viram análise</h2>
   <p class="section-desc">Projetos pessoais sobre temas que me despertam curiosidade. Em construção — novos projetos em breve.</p>
 
-  <div class="projects-grid">
-
-    <div class="project-card card-wip">
-      <span class="project-badge badge-wip">Em breve</span>
-      <div class="project-title">Análise · [seu próximo tema]</div>
-      <div class="project-desc">
-        Uma pergunta curiosa + dados públicos + Python. Espaço reservado para sua próxima análise exploratória.
-      </div>
-      <div class="tag-list">
-        <span class="tag">EDA</span>
-        <span class="tag">Python</span>
-      </div>
-      <div class="project-meta">
-        <span class="project-tech">Em desenvolvimento</span>
-        <span class="project-link" style="color:var(--muted)">em breve</span>
-      </div>
+  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 2rem; gap: 2rem;">
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
     </div>
-
-    <div class="project-card card-wip">
-      <span class="project-badge badge-wip">Em breve</span>
-      <div class="project-title">Análise · [seu próximo tema]</div>
-      <div class="project-desc">
-        Dados abertos + curiosidade genuína + visualização. Espaço reservado para o segundo projeto de análise exploratória.
-      </div>
-      <div class="tag-list">
-        <span class="tag">EDA</span>
-        <span class="tag">Visualização</span>
-      </div>
-      <div class="project-meta">
-        <span class="project-tech">Em desenvolvimento</span>
-        <span class="project-link" style="color:var(--muted)">em breve</span>
-      </div>
-    </div>
-
-    <div class="project-card card-wip">
-      <span class="project-badge badge-wip">Em breve</span>
-      <div class="project-title">Análise · [seu próximo tema]</div>
-      <div class="project-desc">
-        Qualquer tema que faça você perguntar "hm, será que dá pra analisar isso?". A resposta é sempre sim.
-      </div>
-      <div class="tag-list">
-        <span class="tag">EDA</span>
-        <span class="tag">SQL</span>
-      </div>
-      <div class="project-meta">
-        <span class="project-tech">Em desenvolvimento</span>
-        <span class="project-link" style="color:var(--muted)">em breve</span>
-      </div>
-    </div>
-
+    <p style="font-family:var(--font-mono); font-size:0.85rem; color:var(--muted); letter-spacing:0.08em;">
+      carregando análises... em desenvolvimento
+    </p>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="reveal">
   <div class="footer-left">
-    © 2026 · Thays Soares · feito com dados e curiosidade
+    © 2026 · Thays Soares Silva
   </div>
   <div class="footer-links">
     <a href="https://github.com/thaays-ss" target="_blank">GitHub</a>
     <a href="https://www.linkedin.com/in/thays-soares/" target="_blank">LinkedIn</a>
-    <a href="mailto:seu@email.com">Contato</a>
+    <a href="mailto:thaysoaresilva0@gmail.com">Contato</a>
   </div>
 </footer>
 
